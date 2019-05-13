@@ -48,3 +48,5 @@ Thumbs.db
 # configuration perso de dev
 environments/*
 package-lock.json
+
+# configuration

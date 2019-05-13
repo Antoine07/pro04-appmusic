@@ -28,6 +28,7 @@ export class AudioPlayerComponent implements OnInit {
       this.total = Math.floor(album.duration / 120);
 
       const interval = setInterval(() => {
+        console.log(stop)
         if (this.current < this.total) {
           this.current++;
           this.ratio = Math.floor(this.current * (100 / this.total));
@@ -39,10 +40,7 @@ export class AudioPlayerComponent implements OnInit {
           this.aS.switchOff(album);
         }
       }, 1000)
-
     });
 
   }
-
-
 }
