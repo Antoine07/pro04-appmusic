@@ -33,13 +33,9 @@ export class AlbumService {
   // http ~ HttpClient service Angular pour faire du XMLHttpRequest version Framework
   constructor(private http: HttpClient) { }
 
-  getAlbums(order = (a, b) => b.duration - a.duration): Album[] {
-    return this._albums.sort(order);
-  }
-
   // RxJS ~ HttpClient
-  getAlbums2(order = (a, b) => b.duration - a.duration): Observable<Album[]> {
-    
+  getAlbums(order = (a, b) => b.duration - a.duration): Observable<Album[]> {
+
     return this.http.get<Album[]>(this.albumsUrl + '/.json', httpOptions).pipe(
 
       // 1./ Préparation des données avec _.values pour avoir un format exploitable dans l'application => Array de values JSON
@@ -55,12 +51,14 @@ export class AlbumService {
     );
   }
 
-  getAlbum(id: string): Album {
-    return this._albums.find(list => list.id === id);
+  getAlbum(id: string, options = httpOptions): Observable<Album> {
+
+    return this.http.get<Album>(`${this.albumsUrl}/${id}/.json`, options);
   }
 
-  getAlbumList(id: string): List {
-    return this._albumList.find(l => l.id === id);
+  getAlbumList(id: string, options = httpOptions): Observable<List> {
+
+    return this.http.get<List>(`${this.albumListsUrl}/${id}/.json`, options);
   }
 
   count(): number {
@@ -84,27 +82,34 @@ export class AlbumService {
     });
   }
 
-  paginate(start: number, end: number): Album[] {
-    return this.getAlbums().slice(start, end);
+  paginate(start: number, end: number): Observable<Album[]> {
+
+    return this.http.get<Album[]>(this.albumsUrl + '/.json', httpOptions).pipe(
+      map(albums => _.values(albums)),
+      map(albums => albums.slice(start, end)),
+    );
   }
 
   stop(album: Album) {
   }
 
-  search(word: string | null): Album[] {
+  search(word: string | null): Observable<Album[]> {
 
-    if (word == null) return this.getAlbums();
+    return this.http.get<Album[]>(this.albumsUrl + '/.json', httpOptions).pipe(
 
-    let albums = [];
+      map(albums => _.values(albums)),
 
-    if (word.length > 3) {
+      map(albums => {
+        let Albums = [];
+        if (word.length > 3) {
+          albums.forEach(album => {
+            if (album.title.includes(word)) Albums.push(album);
+          })
+        }
 
-      this.getAlbums().forEach(album => {
-        if (album.title.includes(word)) albums.push(album);
-      });
-    }
-
-    return albums;
+        return Albums;
+      })
+    );
   }
 
 }
