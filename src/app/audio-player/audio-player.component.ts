@@ -32,7 +32,6 @@ export class AudioPlayerComponent implements OnInit {
           this.current++;
           this.ratio = Math.floor(this.current * (100 / this.total));
         } else {
-          clearInterval(interval);
           this.total = null;
           this.ratio = 0;
           this.current = 1;
@@ -42,7 +41,8 @@ export class AudioPlayerComponent implements OnInit {
             },
             error => console.log(error),
             () => console.log('completed...')
-          )
+          );
+          clearInterval(interval);
         }
       }, 1000)
     });
