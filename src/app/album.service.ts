@@ -30,23 +30,29 @@ export class AlbumService {
   subjectAlbum = new Subject<Album>();
   buttonPlay = new Subject<boolean>();
 
+  // http ~ HttpClient service Angular pour faire du XMLHttpRequest version Framework
   constructor(private http: HttpClient) { }
 
   getAlbums(order = (a, b) => b.duration - a.duration): Album[] {
     return this._albums.sort(order);
   }
 
-  getAlbums2(): Observable<Album[]> {
+  // RxJS ~ HttpClient
+  getAlbums2(order = (a, b) => b.duration - a.duration): Observable<Album[]> {
+    
     return this.http.get<Album[]>(this.albumsUrl + '/.json', httpOptions).pipe(
-      // Préparation des données avec _.values pour avoir un format exploitable dans l'application => Array de values JSON
+
+      // 1./ Préparation des données avec _.values pour avoir un format exploitable dans l'application => Array de values JSON
+      // On pourra facilement itérer, pb surtout lorsqu'on insert de la data => Firebase crée un hash en clef
       map(albums => _.values(albums)),
-      // Ordonnez les albums par ordre de durées décroissantes
+
+      // 2./ Ordonnez les albums par ordre de durées décroissantes
       map(albums => {
-        return this._albums.sort(
+        return albums.sort(
           (a, b) => { return b.duration - a.duration }
         );
       })
-    )
+    );
   }
 
   getAlbum(id: string): Album {

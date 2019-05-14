@@ -27,7 +27,8 @@ export class AlbumsComponent implements OnInit {
     //console.log('constructor AlbumsComponent');
     //console.log(this.aS.paginate(0, 2));
 
-    // this.aS.getAlbums2().subscribe(albums => console.log(albums))
+    // Observable donc on souscrit pour exécuter le code et récupérer les données
+    this.aS.getAlbums2().subscribe(albums => console.log(albums));
   }
 
   ngOnInit() {
