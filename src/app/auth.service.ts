@@ -7,7 +7,16 @@ import firebase from '../environments/firebase';
 })
 export class AuthService {
 
-  constructor() { }
+  private _authState: boolean = false;
+
+  constructor() {
+
+    firebase.auth().onAuthStateChanged(user => {
+      this._authState = user ? true : false;
+      console.log(this._authState);
+    })
+
+  }
 
   // méthode d'authentification
   auth(email: string, password: string): Promise<any> {
