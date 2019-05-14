@@ -68,18 +68,18 @@ export class AlbumService {
   switchOn(album: Album): void {
     this.buttonPlay.next(false);
 
-    this.getAlbums().map(al => {
-      if (album.id === al.id) { al.status = 'on'; this.subjectAlbum.next(album); }
-      else al.status = 'off';
-    });
+    // this.getAlbums().map(al => {
+    //   if (album.id === al.id) { al.status = 'on'; this.subjectAlbum.next(album); }
+    //   else al.status = 'off';
+    // });
   }
 
-  switchOff(album: Album): void {
+  switchOff(album: Album, options = httpOptions): Observable<Album> {
     this.buttonPlay.next(true);
 
-    this.getAlbums().map(al => {
-      al.status = 'off';
-    });
+    album.status = 'off';
+
+    return this.http.put<Album>(`${this.albumListsUrl}/${album.id}/.json`, album, options)
   }
 
   paginate(start: number, end: number): Observable<Album[]> {
