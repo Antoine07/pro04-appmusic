@@ -5,7 +5,8 @@
 
 export const environment = {
   production: false,
-  perPage : 3
+  perPage : 3,
+  title : "Web App music"
 };
 
 /*
