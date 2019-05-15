@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AlbumService } from 'src/app/album.service';
 import { Album } from 'src/app/albums';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-album',
@@ -9,14 +10,12 @@ import { Album } from 'src/app/albums';
 })
 export class AlbumComponent implements OnInit {
 
-  albums: Album[] = [];
+  albums: Observable<Album[]>;
 
   constructor(private aS: AlbumService) { }
 
   ngOnInit() {
-    this.aS.getAlbums().subscribe(
-      albums => this.albums = albums
-    );
+    this.albums = this.aS.getAlbums();
   }
 
 }
