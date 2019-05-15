@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AlbumService } from 'src/app/album.service';
 import { Album } from 'src/app/albums';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-album',
@@ -15,7 +16,12 @@ export class AlbumComponent implements OnInit {
   constructor(private aS: AlbumService) { }
 
   ngOnInit() {
-    this.albums = this.aS.getAlbums();
+    this.albums = this.aS.paginate(0, environment.perPage);
   }
 
+  paginateParent($event: { start: number, end: number }) {
+    const { start, end } = $event;
+    
+    this.albums = this.aS.paginate(start, end);
+  }
 }
