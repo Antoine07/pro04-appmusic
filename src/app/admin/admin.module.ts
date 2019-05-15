@@ -7,6 +7,8 @@ import { AlbumComponent } from './album/album.component';
   declarations: [AlbumComponent],
   imports: [
     CommonModule
-  ]
+  ],
+  // tous les components exportables à l'extérieur dans les autres modules
+  exports : [ AlbumComponent ] 
 })
 export class AdminModule { }

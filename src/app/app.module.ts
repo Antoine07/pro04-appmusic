@@ -15,6 +15,7 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { PaginateComponent } from './paginate/paginate.component';
 import { AudioPlayerComponent } from './audio-player/audio-player.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { AdminModule } from './admin/admin.module';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     FormsModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    AdminModule
   ],
   providers: [],
   bootstrap: [AppComponent]
