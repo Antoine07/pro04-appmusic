@@ -46,8 +46,7 @@ testem.log
 Thumbs.db
 
 # configuration perso de dev
-src/environments/firebase.ts
-src/environments/environment.prod.ts
+/src/environments/**
 
 package-lock.json
 

@@ -14,7 +14,6 @@ import { AlbumDescriptionComponent } from './album-description/album-description
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
 import { PaginateComponent } from './paginate/paginate.component';
 import { AudioPlayerComponent } from './audio-player/audio-player.component';
-import { AdminComponent } from './admin/admin.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
@@ -28,7 +27,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     PageNotFoundComponent,
     PaginateComponent,
     AudioPlayerComponent,
-    AdminComponent,
     DashboardComponent
   ],
   imports: [
