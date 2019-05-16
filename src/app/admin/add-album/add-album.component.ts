@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { AlbumService } from 'src/app/album.service';
 import { Router } from '@angular/router';
-import { Album } from 'src/app/albums';
 
 @Component({
   selector: 'app-add-album',
@@ -60,7 +59,7 @@ export class AddAlbumComponent implements OnInit {
       );
     
       // au final on utilisera this.albumForm pour créer un nouvel album en base de données
-      // ici on doit ajouter un nouvel album
+      // ici on doit ajouter un nouvel album ... AlbumService addAlbum méthode pour insérer un nouvel album
   }
 
 
