@@ -31,11 +31,11 @@ import { DashboardComponent } from './dashboard/dashboard.component';
   ],
   imports: [
     BrowserModule,
+    AdminModule, // attention à l'ordre des routes si gestion des routes 404 ...
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
     ShareModule,
-    AdminModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
