@@ -19,9 +19,6 @@ const httpOptions = {
 })
 export class AlbumService {
 
-  private _albums: Album[] = ALBUMS; // _ convention private et protected
-  private _albumList: List[] = ALBUM_LISTS;
-
   private albumsUrl = 'https://app-music-71bd0.firebaseio.com/albums';
   private albumListsUrl = 'https://app-music-71bd0.firebaseio.com/albumLists';
 
@@ -61,14 +58,18 @@ export class AlbumService {
     return this.http.get<List>(`${this.albumListsUrl}/${id}/.json`, options);
   }
 
-  count(): number {
-    return this._albums == null ? 0 : this._albums.length;
+  // Observable 
+  count(): Observable<number> {
+
+    return this.http.get<number>(`${this.albumsUrl}/.json`, httpOptions).pipe(
+      map(albums => _.values(albums)),
+      map(albums => albums.length)
+    )
   }
 
   switchOn(album: Album, options = httpOptions): Observable<Album> {
     this.buttonPlay.next(false);
     album.status = "on";
-    
     // On peut faire une copie de l'objet album mais ce n'est pas fondamental
     // méthode { ...album } fait une copie
     const Album = { ...album }; 
@@ -79,7 +80,6 @@ export class AlbumService {
   switchOff(album: Album, options = httpOptions): Observable<Album> {
     this.buttonPlay.next(true);
     album.status = 'off';
-
     // On peut faire une copie de l'objet album mais ce n'est pas fondamental
     // méthode { ...album } fait une copie
     const Album = { ...album };
@@ -100,7 +100,6 @@ export class AlbumService {
     return this.http.get<Album[]>(this.albumsUrl + '/.json', httpOptions).pipe(
 
       map(albums => _.values(albums)),
-
       map(albums => {
         let Albums = [];
         if (word.length > 3) {
