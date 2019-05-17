@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AlbumService } from 'src/app/album.service';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Album } from 'src/app/albums';
+import { ActivatedRoute, Router } from '@angular/router';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-update-album',
@@ -14,17 +16,45 @@ export class UpdateAlbumComponent implements OnInit {
   messageError: string;
   album: Album;
 
-  constructor(private aS: AlbumService, private fb: FormBuilder) { }
+  constructor(
+    private route: ActivatedRoute,
+    private aS: AlbumService,
+    private fb: FormBuilder,
+    private router: Router
+  ) { }
 
   ngOnInit() {
-    const id = "-LKdlklqin9090"; // dans la route pensez à récupérer l'id
+    // id récupérer dans l'url
+    const id = this.route.snapshot.paramMap.get('id');
 
-    this.initAlbum(); // crée l'objet
+    // 1 initialiser l'objet
+    this.initAlbum();
 
+    // 2 s'inscrire à la mise à jour de l'objet en fonction de l'id
     this.aS.getAlbum(id).subscribe(
       album => {
-        // hydrate l'objet
+        // hydrate l'objet updateFormAlbum
+        // met les données dans le formulaire
         this.updateFormAlbum.patchValue(album);
+      }
+    );
+
+    const proposition = 100;
+
+    this.updateFormAlbum.get('proposition').valueChanges.pipe(
+      map(proposition => {
+        return {
+          pTTC: Math.floor(proposition * 1.05), pHT: proposition, pInit: proposition
+        }
+      })
+    ).subscribe(
+      p => {
+        const priceTTC = p.pTTC < proposition ? "Error..." : p.pTTC;
+
+        // hydratation des données de ton formulaire de manière dynamique
+        this.updateFormAlbum.controls['price'].setValue(p.pInit);
+        this.updateFormAlbum.controls['priceHT'].setValue(p.pHT);
+        this.updateFormAlbum.controls['priceTTC'].setValue(priceTTC);
       }
     );
 
@@ -36,7 +66,7 @@ export class UpdateAlbumComponent implements OnInit {
     // utilisez les validators suivants pattern, max, required, minLength(5)
     this.updateFormAlbum = this.fb.group(
       {
-        id: this.album.id,
+        id: '',
         name: new FormControl('', [
           Validators.required,
           Validators.minLength(5)
@@ -71,10 +101,22 @@ export class UpdateAlbumComponent implements OnInit {
   get ref() { return this.updateFormAlbum.get('ref'); }
   get duration() { return this.updateFormAlbum.get('duration'); }
   get description() { return this.updateFormAlbum.get('description'); }
-  get price() { return this.updateFormAlbum.get('price'); }
+  // get price() { return this.updateFormAlbum.get('price'); }
   get proposition() { return this.updateFormAlbum.get('proposition'); }
   get priceTTC() { return this.updateFormAlbum.get('priceTTC'); }
 
-  onSubmit() { console.log(this.updateFormAlbum.value); }
+  onSubmit() {
+    const album: Album = this.updateFormAlbum.value;
+
+    this.aS.updateAlbum(album.id, album).subscribe(
+      () => {
+        this.router.navigate(['/dashboard'], {
+          queryParams: {
+            message: `Success update album ${album.title}`
+          }
+        });
+      }
+    )
+  }
 
 }
