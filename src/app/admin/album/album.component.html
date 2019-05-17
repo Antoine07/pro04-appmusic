@@ -11,6 +11,7 @@
       <th scope="col">Name</th>
       <th scope="col">Title</th>
       <th scope="col">Duration</th>
+      <th scope="col">Price Ether</th>
       <th scope="col">Delete</th>
     </tr>
   </thead>
@@ -21,6 +22,7 @@
       <td>{{ album.name }}</td>
       <td>{{ album.title }}</td>
       <td>{{ album.duration }}</td>
+      <td>{{ album.price || 'no proposition' }}</td>
       <td>DELETE TODO</td>
     </tr>
   </tbody>
