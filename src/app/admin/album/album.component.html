@@ -17,7 +17,7 @@
   <tbody>
     <tr *ngFor="let album of albums | async">
       <th scope="row">{{ album.id }}</th>
-      <td>UPDATE TODO</td>
+      <td><button type="button" routerLink="/admin/udpate/{{album.id}}" class="btn btn-warning">Update</button></td>
       <td>{{ album.name }}</td>
       <td>{{ album.title }}</td>
       <td>{{ album.duration }}</td>
