@@ -123,4 +123,9 @@ export class AlbumService {
     return this.http.put<any>(`${this.albumsUrl}/${ref}/.json`, album);
   }
 
+  deleteAlbum(id : string): Observable<any> {
+
+    return this.http.delete<void>(this.albumsUrl + `/${id}/.json`);
+  }
+
 }

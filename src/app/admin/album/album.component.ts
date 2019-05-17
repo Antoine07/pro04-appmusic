@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AlbumService } from 'src/app/album.service';
-import { Album } from 'src/app/albums';
+import { Album, Position } from 'src/app/albums';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-album',
@@ -15,8 +15,10 @@ export class AlbumComponent implements OnInit {
   albums: Observable<Album[]>;
   changePerpage: number;
   message: string;
+  showModal: boolean = false;
+  albumId: string | number;
 
-  constructor(private aS: AlbumService, private route: ActivatedRoute ) {
+  constructor(private aS: AlbumService, private route: ActivatedRoute, private router: Router) {
     // nombre d'albums par page dans l'administration
     // en fonction des variables d'environement
     this.changePerpage = environment.perPageAdmin;
@@ -32,4 +34,9 @@ export class AlbumComponent implements OnInit {
 
     this.albums = this.aS.paginate(start, end);
   }
+
+  destroy(album) {
+    this.router.navigate(['/admin/delete/' + album.id]);
+  }
+
 }
