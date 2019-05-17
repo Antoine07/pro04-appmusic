@@ -20,7 +20,7 @@ export class DeleteAlbumComponent implements OnInit {
 
     this.aS.deleteAlbum(id).subscribe(() => {
       this.router.navigate(['/dashboard']);
-    }, );
+    } );
 
   }
 
